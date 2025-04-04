@@ -2,16 +2,15 @@ import React from 'react';
 import chartUp from '../../assets/chart-up.svg';
 import chartDown from '../../assets/chart-down.svg';
 import { RotatingLines } from 'react-loader-spinner';
+import styles from './TableCoin.module.css';
 
 function TableCoin({ coins, isLoading }) {
-  console.log(coins);
-
   return (
-    <div>
+    <div className={styles.container}>
       {isLoading ? (
         <RotatingLines strokeColor='#3874ff' strokeWidth='2' />
       ) : (
-        <table>
+        <table className={styles.table}>
           <thead>
             <tr>
               <th>Coin</th>
@@ -26,14 +25,22 @@ function TableCoin({ coins, isLoading }) {
             {coins.map((coin) => (
               <tr key={coin.id}>
                 <td>
-                  <div>
+                  <div className={styles.symbol}>
                     <img src={coin.image} alt='' />
                     <span>{coin.symbol.toUpperCase()}</span>
                   </div>
                 </td>
                 <td>{coin.name}</td>
                 <td>${coin.current_price.toLocaleString()}</td>
-                <td>{coin.price_change_percentage_24h.toFixed(2)}%</td>
+                <td
+                  className={
+                    coin.price_change_percentage_24h.toFixed(2) > 0
+                      ? styles.success
+                      : styles.error
+                  }
+                >
+                  {coin.price_change_percentage_24h.toFixed(2)}%
+                </td>
                 <td>{coin.total_volume.toLocaleString()}</td>
                 <td>
                   <img
