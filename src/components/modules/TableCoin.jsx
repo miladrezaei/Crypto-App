@@ -4,7 +4,11 @@ import chartDown from '../../assets/chart-down.svg';
 import { RotatingLines } from 'react-loader-spinner';
 import styles from './TableCoin.module.css';
 
-function TableCoin({ coins, isLoading }) {
+function TableCoin({ coins, isLoading, setChart }) {
+  const showHandler = () => {
+    setChart(true);
+  };
+
   return (
     <div className={styles.container}>
       {isLoading ? (
@@ -25,7 +29,7 @@ function TableCoin({ coins, isLoading }) {
             {coins.map((coin) => (
               <tr key={coin.id}>
                 <td>
-                  <div className={styles.symbol}>
+                  <div className={styles.symbol} onClick={showHandler}>
                     <img src={coin.image} alt='' />
                     <span>{coin.symbol.toUpperCase()}</span>
                   </div>
