@@ -3,10 +3,18 @@ import chartUp from '../../assets/chart-up.svg';
 import chartDown from '../../assets/chart-down.svg';
 import { RotatingLines } from 'react-loader-spinner';
 import styles from './TableCoin.module.css';
+import { marketChart } from '../../services/CryptoApi';
 
 function TableCoin({ coins, isLoading, setChart }) {
-  const showHandler = () => {
-    setChart(true);
+  const showHandler = async (coin) => {
+    try {
+      const res = await fetch(marketChart(coin.id));
+      const json = await res.json();
+      console.log(json);
+      setChart(json);
+    } catch (error) {
+      setChart(null);
+    }
   };
 
   return (
@@ -29,7 +37,10 @@ function TableCoin({ coins, isLoading, setChart }) {
             {coins.map((coin) => (
               <tr key={coin.id}>
                 <td>
-                  <div className={styles.symbol} onClick={showHandler}>
+                  <div
+                    className={styles.symbol}
+                    onClick={() => showHandler(coin)}
+                  >
                     <img src={coin.image} alt='' />
                     <span>{coin.symbol.toUpperCase()}</span>
                   </div>
